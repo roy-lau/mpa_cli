@@ -1,3 +1,14 @@
+gulp工具集合
+
+gulp-minify-html 压缩html
+babel-preset-es2015  ES6 转换成 ES5 的插件，安装后不用引用
+    rev = require('gulp-rev'), // 对文件名加MD5后缀
+    revCollector = require('gulp-rev-collector'), // 路径替换
+
+css:
+gulp-postcss
+Autoprefixer(处理浏览器私有前缀)，cssnext(使用CSS未来的语法),precss(像Sass的函数)
+
 // npm install --save-dev gulp gulp-changed gulp-jscs gulp-uglify
 
 var gulp = require('gulp');
