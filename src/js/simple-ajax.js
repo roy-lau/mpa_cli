@@ -10,3 +10,4 @@ function ajax(path, mothod, success, error) {
         }
     }
 }
+

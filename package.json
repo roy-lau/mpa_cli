@@ -13,6 +13,7 @@
     "autoprefixer": "^7.1.6",
     "cssnext": "^1.8.4",
     "gulp": "^3.9.1",
+    "gulp-connect": "^5.0.0",
     "gulp-imagemin": "^3.4.0",
     "gulp-less": "^3.3.2",
     "gulp-minify-css": "^1.2.4",

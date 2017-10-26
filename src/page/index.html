@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>smple-ajax</title>
+	<script src="../js/simple-ajax.js"></script>
+	<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<script>
+
+window.onload = function () {
+	ajax(
+			// 'test.txt',
+			// 'test.json',
+			// 'test.xml', 	// ajax默认格式
+			'http://101.201.101.70:8080/5i5j/customer_queryUsername.action',
+			'GET',
+			function(data){
+				console.log(data)
+			},
+			function(status){
+				console.log(status)
+			}
+		)
+	$.ajax({
+		url: 'http://101.201.101.70:8080/5i5j/customer_queryUsername.action',
+		secces: function(err,data){
+			console.log(err,data)
+		},
+		error: function(err){
+			console.log(err)
+		}
+	})
+}
+</script>
+<body>
+
+</body>
+</html>

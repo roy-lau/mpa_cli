@@ -8,11 +8,13 @@ var gulp = require('gulp'),
 
     less = require("gulp-less"), // 将less转化为css
     imagemin = require('gulp-imagemin'), // 图片压缩
-    uglify = require('gulp-uglify') // 压缩js
+    uglify = require('gulp-uglify'), // 压缩js
+    connect = require('gulp-connect') // 启动服务器，热更新
 
 gulp.task('html', function() {
     gulp.src('src/page/**/*.html')
         .pipe(minifyHtml()) // 压缩HTML
+        .pipe(connect.reload()) // 热更新
         .pipe(gulp.dest('dist/page'))
 })
 gulp.task('css', function() {
@@ -21,12 +23,16 @@ gulp.task('css', function() {
     gulp.src('src/css/**/*.css')
         .pipe(postcss(processors)) // 加浏览器前缀
         .pipe(minifyCss()) // 压缩CSS
+        .pipe(connect.reload()) // 热更新
         .pipe(gulp.dest('dist/css'))
 })
 gulp.task('less', function() {
+    var processors = [autoprefixer({ browsers: ['last 8 version'] }), cssnext];
     gulp.src('src/less/**/*.less')
+        .pipe(postcss(processors)) // 加浏览器前缀
         .pipe(less()) // 将less转化为css
         .pipe(minifyCss()) // 压缩CSS
+        .pipe(connect.reload()) // 热更新
         .pipe(gulp.dest('dist/css'))
 })
 gulp.task('fonts', function() {
@@ -37,11 +43,13 @@ gulp.task('fonts', function() {
 gulp.task('imgs', function() {
     gulp.src('src/imgs/**/*')
         .pipe(imagemin({ optimizationLevel: 5 })) // 图片压缩（optimizationLevel优化级别）
+        .pipe(connect.reload()) // 热更新
         .pipe(gulp.dest('dist/imgs'))
 })
 gulp.task('js', function() {
     gulp.src('src/js/**/*.js')
         .pipe(uglify()) //压缩js
+        .pipe(connect.reload()) // 热更新
         .pipe(gulp.dest('dist/js'))
 })
 // 用来删除dist文件夹
@@ -65,10 +73,30 @@ gulp.task('clean', function() {
 gulp.task('default', function() {
     // 做一些处理
 })
-// 用法： gulp --watch 任何task执行完成都会执行watck
-// gulp.watch('src/js/**/*.js', function(event) {
-//     console.log('文件路径：' + event.path + ' 事件类型：' + event.type + ', running tasks...');
-// })
+// 用法： gulp watch
+gulp.task('watch', function() {
+    gulp.watch(['src/page/**/*.html'], ['html']);
+    gulp.watch(['src/css/**/*.css'], ['css']);
+    gulp.watch(['src/less/**/*.less'], ['less']);
+    gulp.watch(['src/fonts/**/*.font'], ['fonts']);
+    gulp.watch(['src/imgs/**/*'], ['imgs']);
+    gulp.watch(['src//js/**/*.js'], ['js']);
+})
+
+gulp.task('connect', function() {
+    connect.server({
+        name: 'Dist App',
+        root: 'src',
+        port: 8001,
+        livereload: true,
+        debug: true,
+        middleware: function(connect, opt) {
+            return []
+        }
+    });
+});
+gulp.task('dev', ['connect', 'watch']) // 启动一个服务器，监听文件的变化(热加载)
+
 
 // 用法： gulp build
 gulp.task('build', ['clean', 'js', 'css', 'fonts', 'imgs', 'html'], function() {
